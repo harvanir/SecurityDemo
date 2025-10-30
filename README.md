@@ -1,132 +1,127 @@
-# Perbandingan CaesarCipher, XorCipher, AES-GCM (PSK), PBKDF2, RSA-2048, bcrypt, scrypt, dan Argon2id
+# SecurityDemo
 
-## Tabel Perbandingan Utama
+Repository ini berisi kumpulan demo dan implementasi berbagai konsep keamanan (security) dalam pemrograman Java, mulai dari algoritma enkripsi, hashing, hingga implementasi mutual TLS (mTLS).
 
-| Metode | Tipe | Arah | Keamanan | Biaya CPU | Kunci/Parameter | Kapan Dipakai | Catatan Penting |
-|---|---|---|---|---|---|---|---|
-| **Caesar Cipher** | Cipher klasik (shift) | 2-arah | ❌ Sangat lemah | ⚡ Sangat ringan | shift (angka) | Obfuscation/latihan | Mudah ditebak; jangan untuk data rahasia. |
-| **XOR Cipher** | Cipher sederhana (XOR 1 kunci) | 2-arah | ❌ Lemah | ⚡ Sangat ringan | 1 byte/array key | Obfuscation/latihan | Pola mudah dianalisis; bukan kripto aman. |
-| **AES-GCM (PSK)** | Kripto modern simetris | 2-arah | ✅ Kuat (dengan IV unik) | ⚡⚡ Ringan (cepat) | key 128/256-bit + IV 12B | Enkripsi data aplikasi/API/IoT | **Jangan reuse IV** untuk key yang sama. Integrity tag bawaan. |
-| **RSA-2048 (OAEP)** | Kripto asimetris | 2-arah (pesan pendek) | ✅ Kuat | 🐢 Lebih berat | public/private key | Enkripsi pendek, distribusi key, tanda tangan | Untuk data besar → pakai hybrid (RSA + AES). |
-| **PBKDF2** | Password hashing (KDF) | 1-arah (verifikasi) | ✅ Kuat (bergantung iterasi) | 🐢 Lambat by design | password + salt + iterasi | Simpan/verifikasi password | Bukan enkripsi. Tujuannya anti-bruteforce. |
-| **bcrypt** | Password hashing (CPU-bound) | 1-arah | ✅ Kuat (masih luas dipakai) | ⚖️ Sedang | cost factor (10–12) | Aplikasi umum (login, web) | Mudah diimplementasikan; salt otomatis di-hash. |
-| **scrypt** | Password hashing (memory-hard) | 1-arah | ✅ Lebih kuat dari PBKDF2 | 🐢 Lebih berat (pakai RAM) | N, r, p (parameter) | Server modern, hindari GPU attack | Aman tapi lebih berat pada RAM tinggi. |
-| **Argon2id** | Password hashing (modern hybrid) | 1-arah | ✅✅ Paling kuat (OWASP rekomendasi) | ⚖️ Bisa diatur | iter, memory, parallelism | Sistem modern, sensitif security | Kombinasi CPU+memory-hard, tahan GPU & side-channel. |
----
+## 🎯 Tujuan Repository
 
-## Rekomendasi Pemakaian
+Repository ini dibuat untuk:
+- **Pembelajaran**: Memahami konsep-konsep keamanan secara praktis
+- **Referensi**: Implementasi best practices untuk berbagai kebutuhan security
+- **Perbandingan**: Analisis kelebihan dan kekurangan berbagai algoritma security
+- **Dokumentasi**: Penjelasan lengkap tentang kapan dan bagaimana menggunakan setiap metode
 
-| Kebutuhan | Solusi |
-|---|---|
-| Enkripsi 2-arah cepat & aman | **AES-GCM (PSK)** |
-| Menyimpan password (umum) | **bcrypt (cost 10–12)** |
-| Menyimpan password (modern/high security) | **Argon2id** |
-| Hindari brute force GPU | **scrypt / Argon2id** |
-| Kompatibilitas lama | **PBKDF2 (SHA-256)** |
-| Kirim kunci / tanda tangan / enkripsi pesan pendek | **RSA-2048 (OAEP/PSS)** |
-| Belajar / obfuscation ringan | **Caesar / XOR** |
+## 📚 Topik yang Dibahas
 
-> Prinsip dasar: **AES untuk data**, **RSA untuk kunci**, **bcrypt/Argon2id untuk password**.
+### 🔐 **Encryption (Enkripsi)**
+Implementasi berbagai algoritma enkripsi dari yang sederhana hingga modern:
+- **Caesar Cipher** - Cipher klasik untuk pembelajaran
+- **XOR Cipher** - Cipher sederhana untuk obfuscation
+- **AES-GCM** - Enkripsi simetris modern yang direkomendasikan
+- **RSA-2048** - Enkripsi asimetris untuk key exchange dan digital signature
 
----
+📂 **Lokasi**: `src/main/java/org/harvanir/security/example/encryption/`
+📖 **Dokumentasi Detail**: [encryption_hashing.md](encryption_hashing.md)
 
-## Pro & Kontra
+### � **Hashing**
+Implementasi algoritma hashing untuk keamanan password:
+- **PBKDF2** - Standard untuk password hashing dengan salt
+- **bcrypt** - Algoritma hashing yang umum digunakan
+- **scrypt** - Memory-hard hashing untuk anti-GPU attacks
+- **Argon2id** - Modern password hashing (OWASP recommendation)
 
-### **AES-GCM (PSK)**
-- ✅ Cepat (sering hardware AES-NI)
-- ✅ Ada authentication tag (integritas terjamin)
-- ⚠️ **IV wajib unik** per enkripsi (boleh disimpan bersama ciphertext)
+📂 **Lokasi**: `src/main/java/org/harvanir/security/example/hashing/`
+📖 **Dokumentasi Detail**: [encryption_hashing.md](encryption_hashing.md)
 
-### **PBKDF2**
-- ✅ Standar luas dan aman
-- ⚠️ CPU-bound, bisa dipecahkan GPU
-- ⚠️ Lambat by design (memang untuk memperlambat brute force)
+### 🤝 **Mutual TLS (mTLS)**
+Implementasi autentikasi dua arah menggunakan certificate:
+- **TLS Fundamentals** - Penjelasan dasar TLS handshake dan keystore/truststore
+- **Certificate Generation** - Script untuk generate CA, server, dan client certificates
+- **mTLS Handshake** - Simulasi dan implementasi mutual TLS
+- **Keystore Management** - Pengelolaan certificate dan truststore
 
-### **bcrypt**
-- ✅ Mudah dipakai, ada di banyak bahasa (Java, Node.js, Python, Go)
-- ✅ Salt otomatis disertakan dalam hash
-- ⚠️ Tidak memory-hard (masih CPU-bound)
-- ⚖️ Cepat diimplementasikan tapi kurang optimal untuk hardware modern (GPU attack masih mungkin)
+📂 **Lokasi**: `mtls/` (files) dan `src/main/java/org/harvanir/security/example/mtls/` (Java code)
+📖 **Dokumentasi Detail**: [mTLS Guide](mtls/mtls-generation-guide.md)
 
-### **scrypt**
-- ✅ Memory-hard (menggunakan RAM untuk hashing)
-- ✅ Lebih sulit dipecahkan oleh GPU/ASIC
-- ⚠️ Lebih berat di RAM dan setup
-- ⚖️ Pilihan bagus bila sistem mendukung resource cukup
+## 🚀 Cara Menjalankan
 
-### **Argon2id**
-- ✅ Kombinasi CPU + memory hard (modern)
-- ✅ Aman terhadap GPU dan side-channel attack
-- ✅ Dapat diatur (iterasi, memori, paralelisme)
-- ⚖️ Ideal untuk sistem baru, menggantikan PBKDF2/bcrypt
+### Prerequisites
+- **Java 11+** (JDK)
+- **Maven 3.6+**
+- **OpenSSL** (untuk generate mTLS certificates)
 
-### **RSA-2048**
-- ✅ Aman untuk key exchange & signature
-- ⚠️ Lambat dan plaintext terbatas
-- ⚠️ Untuk data besar gunakan **hybrid: RSA + AES**
+### Build & Run
+```bash
+# Clone repository
+git clone https://github.com/harvanir/SecurityDemo.git
+cd SecurityDemo
 
-### **Caesar/XOR**
-- ✅ Sangat ringan & simple
-- ❌ Tidak aman sama sekali
+# Build project
+mvn clean compile
 
----
+# Run specific demo (contoh: AES demo)
+mvn exec:java -Dexec.mainClass="org.harvanir.security.example.encryption.SimpleAesDemo"
 
-## Do & Don’t Checklist
+# Run test
+mvn test
+```
 
-| Do ✅ | Don’t ❌ |
-|---|---|
-| Pakai AES-GCM (bukan ECB) | Menggunakan AES-ECB |
-| Pakai IV unik per enkripsi | Reuse IV |
-| Pakai bcrypt/Argon2id untuk password | Menyimpan password dalam bentuk encrypted |
-| Pakai RSA-OAEP / RSA-PSS | RSA-PKCS#1 v1.5 untuk enkripsi |
-| Hybrid untuk data besar | RSA untuk file besar |
-| Gunakan scrypt/Argon2id untuk anti-GPU | Gunakan PBKDF2 tanpa mempertimbangkan iterasi tinggi |
+### Generate mTLS Certificates
+```bash
+cd mtls/
+./generate_mtls_certs.sh
+```
 
----
+## 📖 Dokumentasi Detail
 
-## Kesimpulan
+| Topik | Dokumentasi | Deskripsi |
+|-------|-------------|-----------|
+| **Encryption & Hashing** | [encryption_hashing.md](encryption_hashing.md) | Perbandingan detail algoritma enkripsi dan hashing |
+| **TLS Fundamentals** | [TLS_Handshake_Keystore_Truststore.md](TLS_Handshake_Keystore_Truststore.md) | Penjelasan dasar TLS handshake dan konsep keystore/truststore |
+| **mTLS Implementation** | [mtls/mtls-generation-guide.md](mtls/mtls-generation-guide.md) | Guide lengkap implementasi mutual TLS |
 
-- **AES-GCM (PSK)** = pilihan terbaik untuk enkripsi 2-arah yang cepat & aman  
-- **bcrypt / Argon2id** = hashing password paling direkomendasikan untuk sistem modern  
-- **PBKDF2** = masih aman untuk kompatibilitas luas (jika iterasi tinggi)  
-- **scrypt** = tahan GPU, cocok bila RAM cukup  
-- **RSA-2048** = distribusi kunci & signature  
-- **Caesar/XOR** = hanya untuk edukasi atau obfuscation level rendah  
+## 🎓 Roadmap Pembelajaran
 
----
+### 1️⃣ **Pemula**
+- Mulai dengan Caesar Cipher dan XOR Cipher untuk memahami konsep dasar
+- Pelajari AES-GCM untuk enkripsi modern
+- Pahami bcrypt untuk password hashing
 
-## Referensi Implementasi
+### 2️⃣ **Menengah**
+- Eksplorasi RSA untuk enkripsi asimetris
+- Bandingkan PBKDF2, scrypt, dan Argon2id
+- Implementasi hybrid encryption (RSA + AES)
 
-| Algoritma | Library Java | Maven Dependency | Contoh Package |
-|------------|---------------|------------------|----------------|
-| **AES-GCM** | Java JCE (core) | *bawaan JDK* | `javax.crypto.*` |
-| **PBKDF2** | Java JCE (core) | *bawaan JDK* | `SecretKeyFactory`, `PBEKeySpec` |
-| **bcrypt** | `jBCrypt` | `org.mindrot:jbcrypt:0.4` | `org.mindrot.jbcrypt.BCrypt` |
-| **scrypt** | `BouncyCastle` / `com.lambdaworks:scrypt` | `com.lambdaworks:scrypt:1.4.0` | `SCryptUtil` |
-| **Argon2id** | `argon2-jvm` / Spring Security Crypto | `de.mkammerer:argon2-jvm:2.11` | `Argon2Factory.create(Argon2Types.ARGON2id)` |
-| **RSA-2048** | Java JCE (core) | *bawaan JDK* | `java.security.KeyPairGenerator`, `Cipher` |
+### 3️⃣ **Lanjutan**
+- Pahami TLS handshake dan konsep keystore/truststore
+- Implementasi mTLS untuk autentikasi mutual
+- Certificate management dan PKI
+- Security best practices untuk production
 
----
+## ⚠️ Security Notice
 
-## Benchmark Umum (rata-rata di laptop modern)
+> **Penting**: Demo dalam repository ini ditujukan untuk pembelajaran dan pengembangan. Untuk penggunaan production:
+> - Gunakan parameter security yang sesuai (key length, iteration count, dll.)
+> - Implementasikan proper key management
+> - Lakukan security audit dan penetration testing
+> - Ikuti security compliance yang berlaku
 
-| Algoritma | Waktu rata-rata per operasi | Catatan |
-|------------|-----------------------------|----------|
-| Caesar/XOR | < 0.1 ms | tidak aman |
-| AES-GCM (256-bit) | ~1 ms | cepat & efisien |
-| PBKDF2 (150k iterasi) | 120–200 ms | aman, tapi CPU-bound |
-| bcrypt (cost=12) | 150–250 ms | aman, stabil |
-| scrypt (N=16384,r=8,p=1) | 200–400 ms | memory-hard |
-| Argon2id (64MB, t=3, p=2) | 200–400 ms | paling aman & fleksibel |
-| RSA-2048 encrypt/decrypt | 1–5 ms (pesan pendek) | lambat untuk data besar |
+## 📋 Rekomendasi Quick Start
 
----
+| Kebutuhan | Solusi Rekomendasi | Demo File |
+|-----------|-------------------|-----------|
+| **Enkripsi data aplikasi** | AES-GCM | `SimpleAesDemo.java` |
+| **Password storage** | Argon2id atau bcrypt | `Argon2idDemo.java` atau `BcryptDemo.java` |
+| **Key exchange** | RSA-2048 | `Rsa2048MiniDemo.java` |
+| **Mutual authentication** | mTLS | `MtlsSocketExample.java` |
 
-## Rekomendasi Akhir
-- 🔹 **Gunakan AES-GCM untuk enkripsi data.**
-- 🔹 **Gunakan Argon2id (atau bcrypt jika perlu performa) untuk password.**
-- 🔹 **Gunakan RSA untuk key exchange atau signature.**
-- 🔹 **Gunakan PBKDF2 hanya jika butuh kompatibilitas luas (mis. Java lama).**
-- 🔹 **Jangan gunakan Caesar atau XOR untuk keamanan nyata.**
+## 🤝 Kontribusi
 
----
+Kontribusi selalu diterima! Silakan:
+1. Fork repository ini
+2. Buat branch untuk feature/fix Anda
+3. Commit changes dengan pesan yang jelas
+4. Submit Pull Request
+
+## 📄 Lisensi
+
+Silakan gunakan sesuai kebutuhan pembelajaran dan pengembangan Anda.
