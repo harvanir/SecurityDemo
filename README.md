@@ -2,6 +2,20 @@
 
 Repository ini berisi kumpulan demo dan implementasi berbagai konsep keamanan (security) dalam pemrograman Java, mulai dari algoritma enkripsi, hashing, hingga implementasi mutual TLS (mTLS).
 
+## 📁 Struktur Repository
+
+```
+SecurityDemo/
+├── code/
+│   ├── java/          # Java project (Maven)
+│   ├── go/            # Go implementations (future)
+│   └── kotlin/        # Kotlin implementations (future)
+├── mtls/              # mTLS certificates dan tools
+├── docs/              # Documentation files
+├── *.md               # Main documentation
+└── README.md          # This file
+```
+
 ## 🎯 Tujuan Repository
 
 Repository ini dibuat untuk:
@@ -19,7 +33,7 @@ Implementasi berbagai algoritma enkripsi dari yang sederhana hingga modern:
 - **AES-GCM** - Enkripsi simetris modern yang direkomendasikan
 - **RSA-2048** - Enkripsi asimetris untuk key exchange dan digital signature
 
-📂 **Lokasi**: `src/main/java/org/harvanir/security/example/encryption/`
+📂 **Lokasi**: `code/java/src/main/java/org/harvanir/security/example/encryption/`
 📖 **Dokumentasi Detail**: [encryption_hashing.md](encryption_hashing.md)
 
 ### � **Hashing**
@@ -29,7 +43,7 @@ Implementasi algoritma hashing untuk keamanan password:
 - **scrypt** - Memory-hard hashing untuk anti-GPU attacks
 - **Argon2id** - Modern password hashing (OWASP recommendation)
 
-📂 **Lokasi**: `src/main/java/org/harvanir/security/example/hashing/`
+📂 **Lokasi**: `code/java/src/main/java/org/harvanir/security/example/hashing/`
 📖 **Dokumentasi Detail**: [encryption_hashing.md](encryption_hashing.md)
 
 ### 🤝 **Mutual TLS (mTLS)**
@@ -39,7 +53,7 @@ Implementasi autentikasi dua arah menggunakan certificate:
 - **mTLS Handshake** - Simulasi dan implementasi mutual TLS
 - **Keystore Management** - Pengelolaan certificate dan truststore
 
-📂 **Lokasi**: `mtls/` (files) dan `src/main/java/org/harvanir/security/example/mtls/` (Java code)
+📂 **Lokasi**: `mtls/` (files) dan `code/java/src/main/java/org/harvanir/security/example/mtls/` (Java code)
 📖 **Dokumentasi Detail**: [mTLS Guide](mtls/mtls-generation-guide.md)
 
 ## 🚀 Cara Menjalankan
@@ -50,10 +64,15 @@ Implementasi autentikasi dua arah menggunakan certificate:
 - **OpenSSL** (untuk generate mTLS certificates)
 
 ### Build & Run
+
+#### **Command Line:**
 ```bash
 # Clone repository
 git clone https://github.com/harvanir/SecurityDemo.git
 cd SecurityDemo
+
+# Navigate to Java project
+cd code/java
 
 # Build project
 mvn clean compile
@@ -64,6 +83,17 @@ mvn exec:java -Dexec.mainClass="org.harvanir.security.example.encryption.SimpleA
 # Run test
 mvn test
 ```
+
+#### **VS Code:**
+```bash
+# Open Java workspace directly
+cd SecurityDemo/code/java
+code .
+
+# Or use workspace file
+code SecurityDemo.code-workspace
+```
+Setelah membuka di VS Code, Anda bisa klik tombol **"Run"** pada `public static void main` method.
 
 ### Generate mTLS Certificates
 ```bash

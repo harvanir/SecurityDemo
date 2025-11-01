@@ -42,8 +42,6 @@ import javax.net.ssl.TrustManagerFactory;
  */
 public class MtlsSocketExample {
 
-	static final String JAVA_PACKAGE_TO_PATH = "org/harvanir/security/example/mtls/";
-
 	static final String KEYSTORE_TYPE = "PKCS12";
 
 	public static void main(String[] args) throws Exception {
@@ -77,11 +75,14 @@ public class MtlsSocketExample {
 	}
 
 	private static String getCurrentFilePath(String fileName) {
-		return System.getProperty("user.dir") + getAssetPath(fileName);
-	}
+		try {
+			return new File(System.getProperty("user.dir")).getParentFile().getParentFile()
+					.getPath() + File.separator + "mtls" + File.separator + fileName;
+		} catch (
 
-	private static String getAssetPath(String fileName) {
-		return File.separator + "mtls/" + File.separator + fileName;
+		Exception e) {
+			throw new RuntimeException("error load file: " + e.getMessage());
+		}
 	}
 
 	static SSLContext createSslContext(KeystoreInfo ksInfo, TruststoreInfo tsInfo) throws Exception {

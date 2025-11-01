@@ -204,7 +204,7 @@ Ini memastikan setiap eksekusi dimulai dari kondisi bersih tanpa konflik file la
 
 ## 📚 Related Files
 
-- `../src/main/java/org/harvanir/security/example/mtls/MtlsSocketExample.java` - Contoh implementasi mTLS dalam Java
+- `../code/java/src/main/java/org/harvanir/security/example/mtls/MtlsSocketExample.java` - Contoh implementasi mTLS dalam Java
 - `generate_mtls_certs.sh` - Script generator certificate ini
 
 ---
