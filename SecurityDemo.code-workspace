@@ -5,12 +5,20 @@
             "path": "./code/java"
         },
         {
+            "name": "Go Project",
+            "path": "./code/go"
+        },
+        {
             "name": "Documentation & Tools", 
             "path": "."
         }
     ],
     "settings": {
         "java.configuration.updateBuildConfiguration": "automatic",
-        "java.compile.nullAnalysis.mode": "automatic"
+        "java.compile.nullAnalysis.mode": "automatic",
+        "go.toolsManagement.checkForUpdates": "local",
+        "go.useLanguageServer": true,
+        "go.formatTool": "goimports",
+        "go.lintTool": "golangci-lint"
     }
 }

@@ -1,5 +1,7 @@
 # Perbandingan CaesarCipher, XorCipher, AES-GCM (PSK), PBKDF2, RSA-2048, bcrypt, scrypt, dan Argon2id
 
+> **Multi-Language Implementation**: Repository ini mengimplementasikan algoritma keamanan dalam **Java** (lengkap) dan **Go** (Caesar & ASCII cipher untuk pembelajaran). Lihat bagian [Implementasi Multi-Bahasa](#implementasi-multi-bahasa) di bawah untuk detail.
+
 ## Tabel Perbandingan Utama
 
 | Metode | Tipe | Arah | Keamanan | Biaya CPU | Kunci/Parameter | Kapan Dipakai | Catatan Penting |
@@ -95,8 +97,9 @@
 
 ---
 
-## Referensi Implementasi
+## Implementasi Multi-Bahasa
 
+### **Java Implementations** (Lengkap)
 | Algoritma | Library Java | Maven Dependency | Contoh Package |
 |------------|---------------|------------------|----------------|
 | **AES-GCM** | Java JCE (core) | *bawaan JDK* | `javax.crypto.*` |
@@ -105,6 +108,27 @@
 | **scrypt** | `BouncyCastle` / `com.lambdaworks:scrypt` | `com.lambdaworks:scrypt:1.4.0` | `SCryptUtil` |
 | **Argon2id** | `argon2-jvm` / Spring Security Crypto | `de.mkammerer:argon2-jvm:2.11` | `Argon2Factory.create(Argon2Types.ARGON2id)` |
 | **RSA-2048** | Java JCE (core) | *bawaan JDK* | `java.security.KeyPairGenerator`, `Cipher` |
+
+📂 **Lokasi**: `code/java/src/main/java/org/harvanir/security/example/`
+
+### **Go Implementations** (Pembelajaran)
+| Algoritma | Package Path | Deskripsi | Status |
+|-----------|--------------|-----------|---------|
+| **Caesar Cipher** | `internal/encryption/caesar` | Alphabet-only cipher dengan modular arithmetic | ✅ Done |
+| **ASCII Cipher** | `internal/encryption/ascii` | Simple ASCII character shifting | ✅ Done |
+| **AES-GCM** | `internal/encryption/aes` | Modern symmetric encryption | 🔄 TODO |
+| **RSA** | `internal/encryption/rsa` | Asymmetric encryption | 🔄 TODO |
+| **Argon2** | `internal/hashing/argon2` | Modern password hashing | 🔄 TODO |
+| **bcrypt** | `internal/hashing/bcrypt` | Password hashing | 🔄 TODO |
+
+📂 **Lokasi**: `code/go/internal/`
+📖 **Dokumentasi**: [code/go/README.md](code/go/README.md)
+
+**Cara menjalankan Go implementations:**
+```bash
+cd code/go
+go run cmd/encryption/main.go
+```
 
 ---
 
