@@ -1,6 +1,6 @@
 package org.harvanir.security.example.encryption;
 
-public class CaesarCipherDemo {
+public class AsciiCipherDemo {
 
 	public static final int SHIFT = 3;
 
@@ -18,32 +18,9 @@ public class CaesarCipherDemo {
 	private static String encryptInternal(String text, int shift) {
 		StringBuilder result = new StringBuilder();
 		for (char c : text.toCharArray()) {
-			result.append(shiftChar(c, shift));
-			// result.append((char) (c + shift));
+			result.append((char) (c + shift));
 		}
 		return result.toString();
-	}
-
-	private static char shiftChar(char c, int shift) {
-		if (c >= 'A' && c <= 'Z') {
-			return shiftAlphabet(c, shift, 'A');
-		} else if (c >= 'a' && c <= 'z') {
-			return shiftAlphabet(c, shift, 'a');
-		}
-		return c;
-	}
-
-	private static char shiftAlphabet(char c, int shift, char base) {
-		// posisi relatif dari base
-		int offset = c - base;
-
-		// geser dan wrap modulo 26
-		int newPos = (offset + shift) % 26;
-
-		if (newPos < 0) {
-			newPos += 26;
-		}
-		return (char) (base + newPos);
 	}
 
 	public static String encrypt(String text) {
